@@ -1,0 +1,80 @@
+#include<iostream>
+using namespace std;
+typedef struct{
+                int content[100];
+                int top;
+                int M[100][100];
+              }stiva;
+int n,nrsol;
+stiva S;
+int init(stiva *ST){
+(*ST).content[(*ST).top]=0;
+}
+int succesor(stiva *ST){
+if (((*ST).content[(*ST).top])<n ){
+        (*ST).content[(*ST).top]++;
+        return 1;
+    }
+return 0;
+}
+
+int valid(stiva ST){
+int i,j;
+for(i=1;i<ST.top;i++){
+        if(ST.content[ST.top]==ST.content[i])return 0;
+if(ST.M[ST.content[i]][ST.content[i+1]]==1)return 0;
+
+}
+return 1;
+}
+int solutie(stiva ST){
+if(ST.top==n)return 1;
+return 0;
+}
+int afisare(stiva ST){
+int i,j;
+
+
+for(i=1;i<=n;i++){
+    for(j=1;j<=n;j++)cout<<ST.M[i][j]<<" ";
+cout<<endl;}
+}
+int tipar(stiva *ST){
+int i;
+cout<<endl<<endl;
+for(i=1;i <=(*ST).top;i++)cout<<(*ST).content[i]<<" ";cout<<endl;
+nrsol++;
+for(i=1;i<(*ST).top;++i)(*ST).M[(*ST).content[i]][(*ST).content[i+1]]=1;
+cout<<endl;
+afisare(*ST);
+
+}
+
+int bktr(stiva ST){
+ST.top=1;
+init(&ST);
+while (ST.top>=1){
+int am,este;
+do {
+    am=succesor(&ST);
+    este=valid(ST);
+    }while (!( (am&&este)||(!am)));
+if (am) {
+        if (solutie(ST)) {
+                        tipar(&ST);
+                         }
+        else {
+                ST.top++;
+                init(&ST);
+             }
+        }
+else {ST.top--;}
+    }
+}
+
+int main(){
+cout<<"n=";
+cin>>n;
+bktr(S);
+cout<<endl<<"X: "<< nrsol;
+return 0;}
